@@ -1,0 +1,34 @@
+{% extends "!layout.html" %}
+{%- block extrahead %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{%- if pagename == 'index' %}
+<link rel="canonical" href="https://www.pythonsheets.com/"/>
+<meta property="og:url" content="https://www.pythonsheets.com/">
+{%- elif pagename == '404' -%}
+{%- else %}
+<link rel="canonical" href="https://www.pythonsheets.com/{{ pagename }}{{ file_suffix }}"/>
+<meta property="og:url" content="https://www.pythonsheets.com/{{ pagename }}{{ file_suffix }}">
+{%- endif %}
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ title }}{{ titlesuffix }}">
+{%- if tracking_id %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ tracking_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ tracking_id }}');
+</script>
+{% endif -%}
+{%- if pagename == '404' -%}
+<script>
+  gtag('event', '404', {
+    'event_category': 'error',
+    'event_label': document.referrer,
+    'non_interaction': true
+  });
+</script>
+{%- endif -%}
+{% endblock %}

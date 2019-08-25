@@ -1,0 +1,9 @@
+[report]
+omit =
+    */python?.?/*
+    */site-packages/*
+    app_test.py
+
+exclude_lines =
+    if __name__ == .__main__.:
+    if .DYNO. in os.environ:

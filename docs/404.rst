@@ -1,0 +1,8 @@
+:orphan:
+
+404 Page Not Found
+==================
+
+What you were looking for is just not there.
+
+`Click here to go back to homepage. </>`_

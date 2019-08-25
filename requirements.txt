@@ -1,0 +1,14 @@
+bandit==1.6.2
+coverage==4.5.4
+coveralls==1.8.2
+Flask==1.1.1
+Flask-SSLify==0.1.5
+Flask-Testing==0.7.1
+Flask-SeaSurf==0.2.2
+flask-talisman==0.7.0
+gunicorn==19.9.0
+pycodestyle==2.5.0
+pydocstyle==4.0.1
+requests==2.22.0
+Sphinx==2.2.0
+Werkzeug==0.15.5

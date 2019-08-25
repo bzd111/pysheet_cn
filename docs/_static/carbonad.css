@@ -1,0 +1,90 @@
+#carbonads {
+  display: block;
+  overflow: hidden;
+  padding: 1em;
+  padding-bottom: 0.3em;
+  line-height: 1.5;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#carbonads a {
+  text-decoration: none !important;
+  border-bottom: none;
+}
+
+#carbonads a:hover {
+  color: inherit;
+}
+
+#carbonads span {
+  display: block;
+  overflow: hidden;
+}
+
+.carbon-img {
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.carbon-text {
+  display: block;
+  text-align: left;
+  margin-bottom: .1em;
+  color: #666;
+}
+
+.carbon-poweredby {
+  display: block;
+  text-align: left;
+  font-size: .9em;
+  color: #888 !important;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 875px) {
+  #carbonads {
+    float: none;
+    max-width: 330px;
+    border: 0;
+    display: block;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 0 0 1px hsla(0, 0%, 0%, .1);
+    font-size: var(--font-size);
+    background-color: #eee;
+    line-height: 1.5;
+  }
+  #carbonads span {
+    position: relative;
+  }
+  #carbonads > span {
+    max-width: none;
+  }
+  .carbon-img {
+    float: left;
+    margin: 0;
+  }
+
+  .carbon-img img {
+    max-width: 130px !important;
+  }
+  .carbon-text {
+    float: left;
+    margin-bottom: 0;
+    padding: 8px 20px;
+    text-align: left;
+    color: #333 !important;
+    max-width: calc(100% - 130px - 3em);
+  }
+  .carbon-poweredby {
+    left: 130px;
+    bottom: 0;
+    display: block;
+    color: #555 !important;
+    text-align: right;
+    width: 100%;
+  }
+}
