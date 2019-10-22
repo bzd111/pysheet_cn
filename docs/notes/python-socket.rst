@@ -6,17 +6,14 @@
 Socket
 ======
 
-Socket programming is inevitable for most programmers even though Python
-provides much high-level networking interface such as httplib, urllib, imaplib,
-telnetlib and so on. Some Unix-Like system’s interfaces were called through
-socket interface, e.g., Netlink, Kernel cryptography. To temper a pain to read
-long-winded documents or source code, this cheat sheet tries to collect some
-common or uncommon snippets which are related to low-level socket programming.
+对于大部分程序员来说，即使Python提供了很多高级的网络接口,例如httplib、urllib、imaplib、telnetlib等，
+socket编程还是不可避免的。一些类Unix系统的接口是通过socket接口调用的，例如Netlink，内核加密。
+为了减轻如冗长文档或者源码的痛苦，这个备忘录尝收集一些常用的或不常用的低级的socket编程的代码片段。
 
 .. contents:: Table of Contents
     :backlinks: none
 
-Get Hostname
+获取主机名
 ------------
 
 .. code-block:: python
@@ -30,7 +27,7 @@ Get Hostname
     >>> socket.gethostbyname('localhost')
     '127.0.0.1'
 
-Get address family and socket address from string
+从字符串中获取地址族和socket地址
 -------------------------------------------------
 
 .. code-block:: python
@@ -48,7 +45,7 @@ Get address family and socket address from string
     except socket.gaierror:
         print("Invalid")
 
-Output:
+输出:
 
 .. code-block:: console
 
@@ -60,7 +57,7 @@ Output:
     AddressFamily.AF_INET6 ('2607:f8b0:4006:818::2004', 0, 0, 0)
     AddressFamily.AF_INET ('172.217.10.132', 0)
 
-It handles unusual cases, valid and invalid:
+它处理异常情况，合法和不合法：
 
 .. code-block:: console
 
@@ -77,12 +74,12 @@ It handles unusual cases, valid and invalid:
     $ gai.py 3221226198  # IPv4 in decimal
     AddressFamily.AF_INET ('192.0.2.214', 0)
 
-Transform Host & Network Endian
+转换主机和网络端h
 --------------------------------
 
 .. code-block:: python
 
-    # little-endian machine
+    # 小端机器
     >>> import socket
     >>> a = 1 # host endian
     >>> socket.htons(a) # network endian
@@ -94,7 +91,7 @@ Transform Host & Network Endian
     >>> socket.ntohl(16777216) # host endian
     1
 
-    # big-endian machine
+    # 大端机器
     >>> import socket
     >>> a = 1 # host endian
     >>> socket.htons(a) # network endian
@@ -107,7 +104,7 @@ Transform Host & Network Endian
     1L
 
 
-IP dotted-quad string & byte format convert
+IP点分字符串和字节格式转换
 -------------------------------------------
 
 .. code-block:: python
@@ -119,19 +116,20 @@ IP dotted-quad string & byte format convert
     >>> socket.inet_ntoa(addr)
     '127.0.0.1'
 
-Mac address & byte format convert
+Mac地址和字节格式转换
 ---------------------------------
 
 .. code-block:: python
 
+    >>> import binascii
     >>> mac = '00:11:32:3c:c3:0b'
-    >>> byte = binascii.unhexlify(mac.replace(':',''))
+    >>> byte = binascii.unhexlify(mac.replace(':', ''))
     >>> byte
     '\x00\x112<\xc3\x0b'
     >>> binascii.hexlify(byte)
     '0011323cc30b'
 
-Simple TCP Echo Server
+简单的TCP Echo服务器
 ----------------------
 
 .. code-block:: python
@@ -144,12 +142,12 @@ Simple TCP Echo Server
             self._port = port
         def __enter__(self):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-            sock.bind((self._host,self._port))
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            sock.bind((self._host, self._port))
             sock.listen(10)
             self._sock = sock
             return self._sock
-        def __exit__(self,*exc_info):
+        def __exit__(self, *exc_info):
             if exc_info[0]:
                 import traceback
                 traceback.print_exception(*exc_info)
@@ -158,22 +156,22 @@ Simple TCP Echo Server
     if __name__ == '__main__':
         host = 'localhost'
         port = 5566
-        with Server(host,5566) as s:
+        with Server(host, port) as s:
             while True:
                 conn, addr = s.accept()
                 msg = conn.recv(1024)
                 conn.send(msg)
                 conn.close()
 
-output:
+输出:
 
-.. code-block:: console
+.. code-block:: consolel
 
     $ nc localhost 5566
     Hello World
     Hello World
 
-Simple TCP Echo Server through IPv6
+简单的TCP Echo服务器通过IPv6
 ------------------------------------
 
 .. code-block:: python
@@ -210,7 +208,7 @@ Simple TCP Echo Server through IPv6
         except KeyboardInterrupt:
             pass
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -220,7 +218,7 @@ output:
     Hello IPv6
     Hello IPv6
 
-Disable IPv6 Only
+仅禁用IPv6
 ------------------
 
 .. code-block:: python
@@ -261,11 +259,11 @@ Disable IPv6 Only
         except KeyboardInterrupt:
             pass
 
-output:
+输出:
 
 .. code-block:: bash
 
-    $ python3 ipv6.py
+    $ python3 ipv6.py &
     [1] 23914
     $ nc -4 127.0.0.1 5566
     ('::ffff:127.0.0.1', 42604, 0, 0)
@@ -281,7 +279,7 @@ output:
     Hello IPv6
 
 
-Simple TCP Echo Server Via SocketServer
+通过SocketServer实现简单的TCP的Echo服务
 ---------------------------------------
 
 .. code-block:: python
@@ -294,12 +292,12 @@ Simple TCP Echo Server Via SocketServer
     ...     print(self.client_address)
     ...     self.request.sendall(data)
     ...
-    >>> host = ('localhost',5566)
+    >>> host = ('localhost', 5566)
     >>> s = SocketServer.TCPServer(
     ...   host, handler)
     >>> s.serve_forever()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -308,7 +306,7 @@ output:
     Hello World
 
 
-Simple TLS/SSL TCP Echo Server
+简单的TLS/SSL TCP Echo服务
 --------------------------------
 
 .. code-block:: python
@@ -336,7 +334,7 @@ Simple TLS/SSL TCP Echo Server
     finally:
         sock.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -353,7 +351,7 @@ output:
     read:errno=0
 
 
-Set ciphers on TLS/SSL TCP Echo Server
+为TLS/SSL TCP Echo服务设置密码
 ---------------------------------------
 
 .. code-block:: python
@@ -411,7 +409,7 @@ output:
     read:errno=0
 
 
-Simple UDP Echo Server
+简单的UDP Echo服务
 ----------------------
 
 .. code-block:: python
@@ -419,16 +417,16 @@ Simple UDP Echo Server
     import socket
 
     class UDPServer(object):
-        def __init__(self,host,port):
+        def __init__(self, host, port):
             self._host = host
             self._port = port
 
         def __enter__(self):
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.bind((self._host,self._port))
+            sock.bind((self._host, self._port))
             self._sock = sock
             return sock
-       def __exit__(self,*exc_info):
+       def __exit__(self, *exc_info):
             if exc_info[0]:
                 import traceback
                 traceback.print_exception(*exc_info)
@@ -437,12 +435,12 @@ Simple UDP Echo Server
     if __name__ == '__main__':
         host = 'localhost'
         port = 5566
-        with UDPServer(host,port) as s:
+        with UDPServer(host, port) as s:
             while True:
                 msg, addr = s.recvfrom(1024)
                 s.sendto(msg, addr)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -451,7 +449,7 @@ output:
     Hello World
 
 
-Simple UDP Echo Server Via SocketServer
+通过SocketServer实现简单的UDP Echo服务
 ---------------------------------------
 
 .. code-block:: python
@@ -464,12 +462,12 @@ Simple UDP Echo Server Via SocketServer
     ...     s.sendto(m,self.client_address)
     ...     print(self.client_address)
     ...
-    >>> host = ('localhost',5566)
+    >>> host = ('localhost', 5566)
     >>> s = SocketServer.UDPServer(
     ...   host, handler)
     >>> s.serve_forever()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -478,7 +476,7 @@ output:
     Hello World
 
 
-Simple UDP client - Sender
+简单的UDP客户端 - 发送者
 --------------------------
 
 .. code-block:: python
@@ -488,9 +486,9 @@ Simple UDP client - Sender
     >>> sock = socket.socket(
     ...   socket.AF_INET,
     ...   socket.SOCK_DGRAM)
-    >>> host = ('localhost',5566)
+    >>> host = ('localhost', 5566)
     >>> while True:
-    ...   sock.sendto("Hello\n",host)
+    ...   sock.sendto("Hello\n", host)
     ...   time.sleep(5)
     ...
 
@@ -502,7 +500,7 @@ output:
     Hello
     Hello
 
-Broadcast UDP Packets
+广播UDP包
 ---------------------
 
 .. code-block:: python
@@ -510,22 +508,22 @@ Broadcast UDP Packets
     >>> import socket
     >>> import time
     >>> sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    >>> sock.bind(('',0))
-    >>> sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)
+    >>> sock.bind(('', 0))
+    >>> sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     >>> while True:
     ...   m = '{0}\n'.format(time.time())
-    ...   sock.sendto(m,('<broadcast>',5566))
+    ...   sock.sendto(m,('<broadcast>', 5566))
     ...   time.sleep(5)
     ...
 
-output:
+输出:
 
 .. code-block:: console
 
     $ nc -k -w 1 -ul 5566
     1431473025.72
 
-Simple UNIX Domain Socket
+简单的UNIX Domain Socket
 -------------------------
 
 .. code-block:: python
@@ -556,7 +554,7 @@ Simple UNIX Domain Socket
             conn.send(msg)
             conn.close()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -565,7 +563,7 @@ output:
     Hello
 
 
-Simple duplex processes communication
+简单的双通道通信
 ---------------------------------------
 
 .. code-block:: python
@@ -599,7 +597,7 @@ Simple duplex processes communication
         child.close()
         parent.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -610,7 +608,7 @@ output:
     p[9497] ---> c[9498]: b'Hello Parent'
 
 
-Simple Asynchronous TCP Server - Thread
+简单的异步TCP服务 - 线程
 ---------------------------------------
 
 .. code-block:: python
@@ -623,8 +621,8 @@ Simple Asynchronous TCP Server - Thread
     ...     conn.send(msg)
     ...
     >>> sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    >>> sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-    >>> sock.bind(('localhost',5566))
+    >>> sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    >>> sock.bind(('localhost', 5566))
     >>> sock.listen(5)
     >>> while True:
     ...   conn,addr = sock.accept()
@@ -633,7 +631,7 @@ Simple Asynchronous TCP Server - Thread
     ...   t.start()
     ...
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -641,7 +639,7 @@ output: (bash 1)
     Hello
     Hello
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -649,7 +647,7 @@ output: (bash 2)
     Ker Ker
     Ker Ker
 
-Simple Asynchronous TCP Server - select
+简单的异步TCP服务 - select
 ---------------------------------------
 
 .. code-block:: python
@@ -657,9 +655,9 @@ Simple Asynchronous TCP Server - select
     from select import select
     import socket
 
-    host = ('localhost',5566)
+    host = ('localhost', 5566)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(host)
     sock.listen(5)
     rl = [sock]
@@ -667,7 +665,7 @@ Simple Asynchronous TCP Server - select
     ml = {}
     try:
         while True:
-            r, w, _ = select(rl,wl,[])
+            r, w, _ = select(rl, wl, [])
             # process ready to ready
             for _ in r:
                 if _ == sock:
@@ -686,7 +684,7 @@ Simple Asynchronous TCP Server - select
     except:
         sock.close()
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -694,7 +692,7 @@ output: (bash 1)
     Hello
     Hello
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -703,7 +701,7 @@ output: (bash 2)
     Ker Ker
 
 
-Simple Asynchronous TCP Server - poll
+简单的异步TCP服务 - poll
 --------------------------------------
 
 .. code-block:: python
@@ -807,7 +805,7 @@ Simple Asynchronous TCP Server - poll
     except KeyboardInterrupt:
         pass
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -819,7 +817,7 @@ output: (bash 1)
     Hello Python Socket Programming
     Hello Python Socket Programming
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -830,7 +828,7 @@ output: (bash 2)
     Hello Awesome Python
 
 
-Simple Asynchronous TCP Server - epoll
+简单的异步TCP服务 - epoll
 ---------------------------------------
 
 .. code-block:: python
@@ -936,7 +934,7 @@ Simple Asynchronous TCP Server - epoll
         pass
 
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -948,7 +946,7 @@ output: (bash 1)
     Hello Python Socket Programming
     Hello Python Socket Programming
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -959,7 +957,7 @@ output: (bash 2)
     Hello Awesome Python
 
 
-Simple Asynchronous TCP Server - kqueue
+简单的异步TCP服务 - kqueue
 ----------------------------------------
 
 .. code-block:: python
@@ -983,12 +981,12 @@ Simple Asynchronous TCP Server - kqueue
     resp = {}
 
     @contextlib.contextmanager
-    def Server(host,port):
+    def Server(host, port):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.setblocking(False)
-            s.bind((host,port))
+            s.bind((host, port))
             s.listen(10)
             yield s
         except socket.error:
@@ -1098,7 +1096,7 @@ Simple Asynchronous TCP Server - kqueue
     except KeyboardInterrupt:
         pass
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -1110,7 +1108,7 @@ output: (bash 1)
     Hello Python Socket Programming
     Hello Python Socket Programming
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -1121,7 +1119,7 @@ output: (bash 2)
     Hello Awesome Python
 
 
-High-Level API - selectors
+高阶API - selectors
 --------------------------
 
 .. code-block:: python
@@ -1162,7 +1160,7 @@ High-Level API - selectors
 
     host = 'localhost'
     port = 5566
-    with Server(host, port) as (s,sel):
+    with Server(host, port) as (s, sel):
         sel.register(s, selectors.EVENT_READ, accept_handler)
         while True:
             events = sel.select()
@@ -1170,7 +1168,7 @@ High-Level API - selectors
                 handler = sel_key.data
                 handler(sel_key.fileobj, sel)
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -1178,7 +1176,7 @@ output: (bash 1)
     Hello
     Hello
 
-output: (bash 1)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -1187,7 +1185,7 @@ output: (bash 1)
     Hi
 
 
-Simple Non-blocking TLS/SSL socket via selectors
+简单不阻塞socket通过selectors
 --------------------------------------------------
 
 .. code-block:: python
@@ -1252,7 +1250,7 @@ Simple Non-blocking TLS/SSL socket via selectors
     host = 'localhost'
     port = 5566
     try:
-        with Server(host, port) as (s,sel):
+        with Server(host, port) as (s, sel):
             sel.register(s, selectors.EVENT_READ, accept)
             while True:
                 events = sel.select()
@@ -1263,7 +1261,7 @@ Simple Non-blocking TLS/SSL socket via selectors
         pass
 
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1285,7 +1283,7 @@ output:
     Hello SSL
 
 
-"socketpair" - Similar to PIPE
+"socketpair" - 相似 PIPE
 ------------------------------
 
 .. code-block:: python
@@ -1318,7 +1316,7 @@ output:
             print(msg)
             c_s.sendall("Hi! Parent!")
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1329,7 +1327,7 @@ output:
     Hi! Parent!
     ...
 
-Using sendfile do copy
+使用sendfile去copy
 ------------------------
 
 .. code-block:: python
@@ -1377,7 +1375,7 @@ output:
     e79afdd6aba71b7174142c0bbc289674  dd.out
 
 
-Sending a file through sendfile
+通过sendfile发送一个文件
 ---------------------------------
 
 .. code-block:: python
@@ -1461,7 +1459,7 @@ Sending a file through sendfile
             conn, addr = s.accept()
             do_recv(f, conn)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1476,7 +1474,7 @@ output:
     eadfd96c85976b1f46385e89dfd9c4a8  dd.out
 
 
-Linux kernel Crypto API - AF_ALG
+Linux内核加密API - AF_ALG
 ---------------------------------
 
 .. code-block:: python
@@ -1509,7 +1507,7 @@ Linux kernel Crypto API - AF_ALG
             if h != data:
                 raise Exception(f"sha256({h}) != af_alg({data})")
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1517,7 +1515,7 @@ output:
     9d50bcac2d5e33f936ec2db7dc7b6579cba8e1b099d77c31d8564df46f66bdf5
 
 
-AES-CBC encrypt/decrypt via AF_ALG
+AES-CBC加密/解密通过AF_ALG
 -----------------------------------
 
 .. code-block:: python
@@ -1583,7 +1581,7 @@ AES-CBC encrypt/decrypt via AF_ALG
     print(ciphertext.hex())
     print(plaintext)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1592,7 +1590,7 @@ output:
     b'Demo AF_ALG'
 
 
-AES-GCM encrypt/decrypt via AF_ALG
+AES-GCM加密/解密通过AF_ALG
 -----------------------------------
 
 .. code-block:: python
@@ -1692,7 +1690,7 @@ AES-GCM encrypt/decrypt via AF_ALG
     print(ciphertext.hex())
     print(plaintext)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1701,7 +1699,7 @@ output:
 	b'Hello AES-GCM'
 
 
-AES-GCM encrypt/decrypt file with sendfile
+AES-GCM使用sendfile加密/解密文件
 -------------------------------------------
 
 .. code-block:: python
@@ -1801,7 +1799,7 @@ AES-GCM encrypt/decrypt file with sendfile
         print(plaintext)
 
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1811,7 +1809,7 @@ output:
     b'Test AES-GCM with sendfile\n'
 
 
-Compare the performance of AF_ALG to cryptography
+比较AF_ALG和cryptography的性能
 --------------------------------------------------
 
 .. code-block:: python
@@ -1948,7 +1946,7 @@ Compare the performance of AF_ALG to cryptography
     # clean up
     os.remove(plain)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -1957,7 +1955,7 @@ output:
     total cost time: 50.256704807281494. [cryptography]
 
 
-Sniffer IP packets
+IP数据包嗅探器
 ------------------
 
 .. code-block:: python
@@ -2036,7 +2034,7 @@ Sniffer IP packets
     except KeyboardInterrupt:
         s.close()
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -2046,7 +2044,7 @@ output: (bash 1)
     ICMP: 127.0.0.1 -> 127.0.0.1
     ICMP: 127.0.0.1 -> 127.0.0.1
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -2061,7 +2059,7 @@ output: (bash 2)
     round-trip min/avg/max/stddev = 0.063/0.103/0.159/0.041 ms
 
 
-Sniffer TCP packet
+TCP数据包嗅探器
 ------------------
 
 .. code-block:: python
@@ -2214,7 +2212,7 @@ Sniffer TCP packet
     except KeyboardInterrupt:
         pass
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -2239,7 +2237,7 @@ output:
     --------------- DATA -----------------
     b'GET / HTTP/1.1\r\nHost: localhost:8000\r\nUser-Agent: curl/7.47.0\r\nAccept: */*\r\n\r\n'
 
-Sniffer ARP packet
+ARP数据包嗅探器
 ------------------
 
 .. code-block:: python
@@ -2304,7 +2302,7 @@ Sniffer ARP packet
         print("Dest IP:         ", socket.inet_ntoa(arp[8]))
         print("-------------------------------------------")
 
-output:
+输出:
 
 .. code-block:: console
 
