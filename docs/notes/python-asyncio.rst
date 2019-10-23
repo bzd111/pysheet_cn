@@ -12,7 +12,7 @@ Asyncio
 asyncio.run
 ------------
 
-**New in Python 3.7**
+**Python 3.7中的新功能**
 
 .. code-block:: python
 
@@ -26,7 +26,7 @@ asyncio.run
     ...
     >>> ret = asyncio.run(read_file('/etc/passwd'))
 
-Future like object
+Future像对象
 --------------------
 
 .. code-block:: python
@@ -55,7 +55,7 @@ Future like object
     ok
 
 
-Future like object ``__await__`` other task
+Future像对象的 ``__await__`` 而不是task
 --------------------------------------------
 
 .. code-block:: python
@@ -88,7 +88,7 @@ Future like object ``__await__`` other task
     ok
 
 
-Patch loop runner ``_run_once``
+补丁loop运行 ``_run_once``
 --------------------------------
 
 .. code-block:: python
@@ -117,7 +117,7 @@ Patch loop runner ``_run_once``
     >>> loop.close()
 
 
-Put blocking task into Executor
+把阻塞任务放入到Executor
 --------------------------------
 
 .. code-block:: python
@@ -135,7 +135,7 @@ Put blocking task into Executor
     >>> ret = loop.run_until_complete(task)
 
 
-Socket with asyncio
+Socket结合asyncio
 -------------------
 
 .. code-block:: python
@@ -169,15 +169,15 @@ Socket with asyncio
     loop.run_forever()
     loop.close()
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
-
+    $ python socket_asyncio.py &
     $ nc localhost 9527
     Hello
     Hello
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -186,7 +186,7 @@ output: (bash 2)
     World
 
 
-Event Loop with polling
+事件循环使用polling
 -----------------------
 
 .. code-block:: python
@@ -292,7 +292,7 @@ Event Loop with polling
     loop.run_forever()
 
 
-Transport and Protocol
+传输和协议
 -----------------------
 
 .. code-block:: python
@@ -321,7 +321,7 @@ Transport and Protocol
     finally:
         loop.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -335,7 +335,7 @@ output:
     World
     World
 
-Transport and Protocol with SSL
+传输和协议使用SSL
 ---------------------------------
 
 .. code-block:: python
@@ -390,7 +390,7 @@ Transport and Protocol with SSL
     finally:
         loop.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -400,7 +400,7 @@ output:
 
     # then open browser: https://localhost:4433
 
-Asynchronous Iterator
+异步迭代器
 ---------------------
 
 .. code-block:: python
@@ -432,7 +432,7 @@ Asynchronous Iterator
     2
     3
 
-What is asynchronous iterator
+什么是异步迭代器
 ------------------------------
 
 .. code-block:: python
@@ -468,7 +468,7 @@ What is asynchronous iterator
     2
     3
 
-Asynchronous context manager
+异步上下文管理器
 ----------------------------
 
 .. code-block:: python
@@ -500,7 +500,7 @@ Asynchronous context manager
     __aexit__
 
 
-What is asynchronous context manager
+什么是异步上下文
 -------------------------------------
 
 .. code-block:: python
@@ -528,7 +528,7 @@ What is asynchronous context manager
     __aexit__
 
 
-decorator ``@asynccontextmanager``
+装饰器 ``@asynccontextmanager``
 ------------------------------------
 
 **New in Python 3.7**
@@ -556,7 +556,7 @@ decorator ``@asynccontextmanager``
     Hello
     done
 
-Simple asyncio connection pool
+简单的asyncio连接池
 -------------------------------
 
 .. code-block:: python
@@ -685,7 +685,7 @@ Simple asyncio connection pool
     finally:
         loop.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -697,7 +697,7 @@ output:
     echo: b'coro_3'
     echo: b'coro_4'
 
-Get domain name
+获取domain名称
 ----------------
 
 .. code-block:: python
@@ -717,7 +717,7 @@ Get domain name
     ('192.30.253.112', 443)
     ('192.30.253.112', 443)
 
-Gather Results
+收集结果
 --------------
 
 .. code-block:: python
@@ -769,7 +769,7 @@ Gather Results
 
     asyncio.run(main())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -778,7 +778,7 @@ output:
     HTTP/1.1 200 OK
     HTTP/1.1 301 Moved Permanently
 
-Simple asyncio UDP echo server
+简单的asyncio UDP echo服务
 --------------------------------
 
 .. code-block:: python
@@ -839,7 +839,7 @@ Simple asyncio UDP echo server
     finally:
         loop.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -849,7 +849,7 @@ output:
     Hello UDP
 
 
-Simple asyncio Web server
+简答的asyncio Web服务
 -------------------------
 
 .. code-block:: python
@@ -902,7 +902,7 @@ Simple asyncio Web server
     # Then open browser with url: localhost:9527
 
 
-Simple HTTPS Web Server
+简单的HTTPS Web服务
 ------------------------
 
 .. code-block:: python
@@ -936,7 +936,7 @@ Simple HTTPS Web Server
     asyncio.run(main('0.0.0.0', 8000))
 
 
-Simple HTTPS Web server (low-level api)
+简单的HTTPS Web服务 (低等级的api)
 ----------------------------------------
 
 .. code-block:: python
@@ -1043,7 +1043,7 @@ Simple HTTPS Web server (low-level api)
     finally:
         loop.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1060,7 +1060,7 @@ output:
     >      --cacert ~/test/root-ca.crt
 
 
-TLS Upgrade
+TLS优化
 ------------
 
 **New in Python 3.7**
@@ -1111,7 +1111,7 @@ TLS Upgrade
 
     asyncio.run(main())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1120,7 +1120,7 @@ output:
     $ python3 https.py
     HTTP/1.1 200 OK
 
-Using sendfile
+使用sendfile
 ---------------
 
 **New in Python 3.7**
@@ -1154,7 +1154,7 @@ Using sendfile
 
     asyncio.run(main("0.0.0.0", 8000))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1165,7 +1165,7 @@ output:
     <!doctype html><h1>Awesome Python</h1>
 
 
-Simple asyncio WSGI web server
+简单的asyncio WSGI web服务
 ------------------------------
 
 .. code-block:: python
@@ -1272,7 +1272,7 @@ Simple asyncio WSGI web server
 
     @app.route('/hello')
     def hello():
-        return Response("Hello WSGI",mimetype="text/plain")
+        return Response("Hello WSGI", mimetype="text/plain")
 
     server = WSGIServer(s, app.wsgi_app)
     try:
