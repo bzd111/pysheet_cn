@@ -411,7 +411,7 @@ Socket结合asyncio
     >>> class AsyncIter:
     ...     def __init__(self, it):
     ...         self._it = iter(it)
-    ...     async def __aiter__(self):
+    ...     def __aiter__(self):
     ...         return self
     ...     async def __anext__(self):
     ...         await asyncio.sleep(1)
@@ -441,7 +441,7 @@ Socket结合asyncio
     >>> class AsyncIter:
     ...     def __init__(self, it):
     ...         self._it = iter(it)
-    ...     async def __aiter__(self):
+    ...     def __aiter__(self):
     ...         return self
     ...     async def __anext__(self):
     ...         await asyncio.sleep(1)
