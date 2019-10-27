@@ -10,7 +10,7 @@ Concurrency
     :backlinks: none
 
 
-Execute a shell command
+运行shell命令
 ------------------------
 
 .. code-block:: python
@@ -29,7 +29,7 @@ Execute a shell command
     0
 
 
-Create a thread via "threading"
+创建线程通过"threading"
 -------------------------------
 
 .. code-block:: python
@@ -48,7 +48,7 @@ Create a thread via "threading"
     I am worker 1
     I am worker 2
 
-    # using function could be more flexible
+    # 使用function会更灵活
     >>> def Worker(worker_id):
     ...   print("I am worker %d" % worker_id)
     ...
@@ -59,13 +59,13 @@ Create a thread via "threading"
     I am worker 1
     I am worker 2
 
-Performance Problem - GIL
+性能难题 - GIL
 -------------------------
 
 .. code-block:: python
 
     # GIL - Global Interpreter Lock
-    # see: Understanding the Python GIL
+    # 理解Python GIL
     >>> from threading import Thread
     >>> def profile(func):
     ...   def wrapper(*args, **kwargs):
@@ -92,15 +92,15 @@ Performance Problem - GIL
     9.51164007187
     >>> hasthread()
     11.3131771088
-    # !Thread get bad Performance
-    # since cost on context switch
+    # 使用线程获得差的性能
+    # 因为成本在上下文切换
 
-Consumer and Producer
+消费者和生产者
 ---------------------
 
 .. code-block:: python
 
-    # This architecture make concurrency easy
+    # 这个体系结构使并发很简单
     >>> from threading import Thread
     >>> from Queue import Queue
     >>> from random import random
@@ -127,24 +127,24 @@ Consumer and Producer
     >>> t2 = Thread(target=consumer)
     >>> t1.start();t2.start()
 
-Thread Pool Template
+线程池模版
 ---------------------
 
 .. code-block:: python
 
-    # producer and consumer architecture
+    # 生产者和消费者结构
     from Queue import Queue
     from threading import Thread
 
     class Worker(Thread):
-       def __init__(self,queue):
+       def __init__(self, queue):
           super(Worker, self).__init__()
           self._q = queue
           self.daemon = True
           self.start()
        def run(self):
           while True:
-             f,args,kwargs = self._q.get()
+             f, args, kwargs = self._q.get()
              try:
                 print(f(*args, **kwargs))
              except Exception as e:
@@ -157,7 +157,7 @@ Thread Pool Template
           # Create Worker Thread
           for _ in range(num_t):
              Worker(self._q)
-       def add_task(self,f,*args,**kwargs):
+       def add_task(self, f, *args, **kwargs):
           self._q.put((f, args, kwargs))
        def wait_complete(self):
           self._q.join()
@@ -165,31 +165,31 @@ Thread Pool Template
     def fib(n):
        if n <= 2:
           return 1
-       return fib(n-1)+fib(n-2)
+       return fib(n-1) + fib(n-2)
 
     if __name__ == '__main__':
        pool = ThreadPool()
        for _ in range(3):
-          pool.add_task(fib,35)
+          pool.add_task(fib, 35)
        pool.wait_complete()
 
 
-Using multiprocessing ThreadPool
+使用multiprocessing模块的ThreadPool
 --------------------------------
 
 .. code-block:: python
 
-    # ThreadPool is not in python doc
+    # ThreadPool不在python doc中
     >>> from multiprocessing.pool import ThreadPool
     >>> pool = ThreadPool(5)
     >>> pool.map(lambda x: x**2, range(5))
     [0, 1, 4, 9, 16]
 
-Compare with "map" performance
+和 "map" 比较性能
 
 .. code-block:: python
 
-    # pool will get bad result since GIL
+    # pool将会得到坏的结果由于GIL
     import time
     from multiprocessing.pool import \
          ThreadPool
@@ -217,7 +217,7 @@ Compare with "map" performance
     pool_map()
     ordinary_map()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -227,10 +227,10 @@ output:
     ordinary_map
     cost: 0.38525390625
 
-Mutex lock
+互斥锁
 ----------
 
-Simplest synchronization primitive lock
+最简单的同步原语锁
 
 .. code-block:: python
 
@@ -242,8 +242,8 @@ Simplest synchronization primitive lock
     ...   print("task{0} get".format(id))
     ...   lock.release()
     ...
-    >>> t1=Thread(target=getlock,args=(1,))
-    >>> t2=Thread(target=getlock,args=(2,))
+    >>> t1=Thread(target=getlock, args=(1,))
+    >>> t2=Thread(target=getlock, args=(2,))
     >>> t1.start();t2.start()
     task1 get
     task2 get
@@ -260,10 +260,10 @@ Simplest synchronization primitive lock
     task2 get
 
 
-Deadlock
+死锁
 --------
 
-Happen when more than one mutex lock.
+当多个互斥锁的时候，会发生死锁
 
 .. code-block:: python
 
@@ -296,10 +296,10 @@ Happen when more than one mutex lock.
     True
 
 
-Implement "Monitor"
+实现 "Monitor"
 -------------------
 
-Using RLock
+使用RLock
 
 .. code-block:: python
 
@@ -310,13 +310,13 @@ Using RLock
 
     class monitor(object):
        lock = RLock()
-       def foo(self,tid):
+       def foo(self, tid):
           with monitor.lock:
              print("%d in foo" % tid)
              time.sleep(5)
              self.ker(tid)
 
-       def ker(self,tid):
+       def ker(self, tid):
           with monitor.lock:
              print("%d in ker" % tid)
     m = monitor()
@@ -326,14 +326,14 @@ Using RLock
     def task2(id):
        m.ker(id)
 
-    t1 = Thread(target=task1,args=(1,))
-    t2 = Thread(target=task2,args=(2,))
+    t1 = Thread(target=task1, args=(1,))
+    t2 = Thread(target=task2, args=(2,))
     t1.start()
     t2.start()
     t1.join()
     t2.join()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -342,10 +342,10 @@ output:
     1 in ker
     2 in ker
 
-Control primitive resources
+控制原始资源
 ---------------------------
 
-Using Semaphore
+使用Semaphore
 
 .. code-block:: python
 
@@ -365,13 +365,13 @@ Using Semaphore
 
     threads = []
     for _t in range(5):
-        t = Thread(target=foo,args=(_t,))
+        t = Thread(target=foo, args=(_t,))
         threads.append(t)
         t.start()
     for _t in threads:
         _t.join()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -380,18 +380,18 @@ output:
     1 acquire sema
     2 acquire sema
     0 release sema
-     3 acquire sema
+    3 acquire sema
     2 release sema
-     4 acquire sema
+    4 acquire sema
     1 release sema
     4 release sema
     3 release sema
 
 
-Ensure tasks has done
+确保任务已完成
 ---------------------
 
-Using 'event'
+使用'event'
 
 .. code-block:: python
 
@@ -406,9 +406,9 @@ Using 'event'
        e.wait()
        print("%d get event set" % id)
 
-    t1=Thread(target=worker,args=(1,))
-    t2=Thread(target=worker,args=(2,))
-    t3=Thread(target=worker,args=(3,))
+    t1=Thread(target=worker, args=(1,))
+    t2=Thread(target=worker, args=(2,))
+    t3=Thread(target=worker, args=(3,))
     t1.start()
     t2.start()
     t3.start()
@@ -417,7 +417,7 @@ Using 'event'
     time.sleep(3)
     e.set()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -426,13 +426,13 @@ output:
     2 wait event
     3 wait event
     2 get event set
-     3 get event set
+    3 get event set
     1 get event set
 
-Thread-safe priority queue
+线程安全的优先级队列
 --------------------------
 
-Using 'condition'
+使用'condition'
 
 .. code-block:: python
 
@@ -455,7 +455,7 @@ Using 'condition'
 
         def put(self, item, priority):
             with self._cv:
-                heapq.heappush(self._q, (-priority,self._count,item))
+                heapq.heappush(self._q, (-priority, self._count, item))
                 self._count += 1
                 self._cv.notify()
 
@@ -488,7 +488,7 @@ Using 'condition'
     t1.start();t2.start()
     t1.join();t2.join()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -501,10 +501,10 @@ output:
     0.09123101305407577
     wait...
 
-Multiprocessing
+多进程
 ---------------
 
-Solving GIL problem via processes
+通过进程解决GIL问题
 
 .. code-block:: python
 
@@ -525,19 +525,19 @@ Solving GIL problem via processes
     ...
     >>> @profile
     ... def nomultiprocess():
-    ...     map(fib,[35]*5)
+    ...     map(fib, [35]*5)
     ...
     >>> @profile
     ... def hasmultiprocess():
     ...     pool = Pool(5)
-    ...     pool.map(fib,[35]*5)
+    ...     pool.map(fib, [35]*5)
     ...
     >>> nomultiprocess()
     23.8454811573
     >>> hasmultiprocess()
     13.2433719635
 
-Custom multiprocessing map
+自定义multiprocessing map
 --------------------------
 
 .. code-block:: python
@@ -546,24 +546,24 @@ Custom multiprocessing map
     from itertools import izip
 
     def spawn(f):
-        def fun(pipe,x):
+        def fun(pipe, x):
             pipe.send(f(x))
             pipe.close()
         return fun
 
-    def parmap(f,X):
+    def parmap(f, X):
         pipe=[Pipe() for x in X]
         proc=[Process(target=spawn(f),
-              args=(c,x))
-              for x,(p,c) in izip(X,pipe)]
+              args=(c, x))
+              for x,(p,c) in izip(X, pipe)]
         [p.start() for p in proc]
         [p.join() for p in proc]
-        return [p.recv() for (p,c) in pipe]
+        return [p.recv() for (p, c) in pipe]
 
-    print(parmap(lambda x:x**x,range(1,5)))
+    print(parmap(lambda x: x**x, range(1, 5)))
 
 
-Graceful way to kill all child processes
+优雅地杀死所有子进程
 -----------------------------------------
 
 .. code-block:: python
@@ -596,7 +596,7 @@ Graceful way to kill all child processes
                 os.kill(p.pid, signal.SIGKILL)
 
 
-Simple round-robin scheduler
+简单的循环scheduler
 ----------------------------
 
 .. code-block:: python
@@ -604,13 +604,13 @@ Simple round-robin scheduler
     >>> def fib(n):
     ...   if n <= 2:
     ...     return 1
-    ...   return fib(n-1)+fib(n-2)
+    ...   return fib(n-1) + fib(n-2)
     ...
     >>> def gen_fib(n):
-    ...   for _ in range(1,n+1):
+    ...   for _ in range(1, n+1):
     ...     yield fib(_)
     ...
-    >>> t=[gen_fib(5),gen_fib(3)]
+    >>> t=[gen_fib(5), gen_fib(3)]
     >>> from collections import deque
     >>> tasks = deque()
     >>> tasks.extend(t)
@@ -635,7 +635,7 @@ Simple round-robin scheduler
     5
     done
 
-Scheduler with blocking function
+调度阻塞函数
 ---------------------------------
 
 .. code-block:: python
@@ -655,7 +655,7 @@ Scheduler with blocking function
         return fib(n-1)+fib(n-2)
 
     def run():
-        while any([tasks,r_wait,s_wait]):
+        while any([tasks, r_wait, s_wait]):
             while not tasks:
                 # polling
                 rr, sr, _ = select(r_wait, s_wait, {})
@@ -678,7 +678,7 @@ Scheduler with blocking function
     def fib_server():
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        sock.bind(('localhost',5566))
+        sock.bind(('localhost', 5566))
         sock.listen(5)
         while True:
             yield 'recv', sock
@@ -699,7 +699,7 @@ Scheduler with blocking function
     tasks.append(fib_server())
     run()
 
-output: (bash 1)
+输出: (bash 1)
 
 .. code-block:: console
 
@@ -707,7 +707,7 @@ output: (bash 1)
     20
     6765
 
-output: (bash 2)
+输出: (bash 2)
 
 .. code-block:: console
 
@@ -735,7 +735,7 @@ PoolExecutor
     ...         print(_, end=' ')
     ...
     1 1 2 3 5 >>>
-    # result is generator?!
+    # 结果是一个生成器?!
     >>> with ThreadPoolExecutor(3) as e:
     ...   res = e.map(fib, [1,2,3])
     ...   inspect.isgenerator(res)
@@ -781,7 +781,7 @@ PoolExecutor
     pocess cost: 5.538189888000488
 
 
-How to use ``ThreadPoolExecutor``?
+如何使用 ``ThreadPoolExecutor``?
 ------------------------------------
 
 .. code-block:: python
@@ -802,7 +802,7 @@ How to use ``ThreadPoolExecutor``?
 
     print(res)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -810,7 +810,7 @@ output:
     [832040, 1346269, 2178309]
 
 
-What does "with ThreadPoolExecutor" work?
+"with ThreadPoolExecutor"是如何工作的?
 -----------------------------------------
 
 .. code-block:: python
@@ -835,7 +835,7 @@ What does "with ThreadPoolExecutor" work?
     e.shutdown(wait=True)
     print(res)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -843,7 +843,7 @@ output:
     832040
     832040
 
-Future Object
+Future对象
 -------------
 
 .. code-block:: python
@@ -879,7 +879,7 @@ Future Object
                 print("res: {}".format(res))
         print("end")
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -895,7 +895,7 @@ output:
     res: 2178309
     end
 
-Future error handling
+Future error处理
 ---------------------
 
 .. code-block:: python
@@ -917,7 +917,7 @@ Future error handling
             f = e.submit(spam)
             f.add_done_callback(handler)
 
-output:
+输出:
 
 .. code-block:: console
 
