@@ -10,7 +10,7 @@ SQLAlchemy
     :backlinks: none
 
 
-Set a database URL
+设置数据的URL
 -------------------
 
 .. code-block:: python
@@ -27,7 +27,7 @@ Set a database URL
     sqlite_db = {'drivername': 'sqlite', 'database': 'db.sqlite'}
     print(URL(**sqlite_db))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -36,7 +36,7 @@ output:
     sqlite:///db.sqlite
 
 
-Sqlalchemy Support DBAPI - PEP249
+Sqlalchemy支持DBAPI - PEP249
 -----------------------------------
 
 .. code-block:: python
@@ -69,7 +69,7 @@ Sqlalchemy Support DBAPI - PEP249
     print(result.fetchall())
 
 
-Transaction and Connect Object
+事务和连接对象
 --------------------------------
 
 .. code-block:: python
@@ -90,7 +90,7 @@ Transaction and Connect Object
     conn.close()
 
 
-Metadata - Generating Database Schema
+MetaData - 生成数据库表结构
 --------------------------------------
 
 .. code-block:: python
@@ -107,15 +107,15 @@ Metadata - Generating Database Schema
     # Create a metadata instance
     metadata = MetaData(engine)
     # Declare a table
-    table = Table('Example',metadata,
+    table = Table('Example', metadata,
                   Column('id',Integer, primary_key=True),
-                  Column('name',String))
+                  Column('name', String))
     # Create all tables
     metadata.create_all()
     for _t in metadata.tables:
        print("Table: ", _t)
 
-Inspect - Get Database Information
+Inspect - 获取数据库信息
 ------------------------------------
 
 .. code-block:: python
@@ -135,7 +135,7 @@ Inspect - Get Database Information
     print(inspector.get_columns('EX1'))
 
 
-Reflection - Loading Table from Existing Database
+Reflection - 从现有数据库加载表
 ---------------------------------------------------
 
 .. code-block:: python
@@ -155,7 +155,7 @@ Reflection - Loading Table from Existing Database
     metadata.reflect(bind=engine)
     print(metadata.tables)
 
-Get Table from MetaData
+从元数据中获取表
 ------------------------
 
 .. code-block:: python
@@ -176,7 +176,7 @@ Get Table from MetaData
     print(ex_table)
 
 
-Create all Tables Store in "MetaData"
+创建存入"MetaData"的所有表
 --------------------------------------
 
 .. code-block:: python
@@ -202,7 +202,7 @@ Create all Tables Store in "MetaData"
     # Create all tables in meta
     meta.create_all()
 
-Create Specific Table
+创建特定的表
 -----------------------
 
 .. code-block:: python
@@ -226,7 +226,7 @@ Create Specific Table
     t1.create()
 
 
-Create table with same columns
+使用相同的字段创建表
 -------------------------------
 
 .. code-block:: python
@@ -264,7 +264,7 @@ Create table with same columns
         print(_t)
 
 
-Drop a Table
+删除一个表
 -------------
 
 .. code-block:: python
@@ -296,7 +296,7 @@ Drop a Table
     inspector = inspect(engine)
     print('Test' in inspector.get_table_names())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -305,7 +305,7 @@ output:
     $ False
 
 
-Some Table Object Operation
+表对象的一些操作
 ----------------------------
 
 .. code-block:: python
@@ -337,7 +337,7 @@ Some Table Object Operation
     print(c.table)
 
 
-SQL Expression Language
+SQL表达式
 -------------------------
 
 .. code-block:: python
@@ -383,7 +383,7 @@ SQL Expression Language
     # in expression
     print(table.c.l_name.in_(['a','b']))
 
-insert() - Create an "INSERT" Statement
+insert() - 创建一个"INSERT"语句
 ----------------------------------------
 
 .. code-block:: python
@@ -419,7 +419,7 @@ insert() - Create an "INSERT" Statement
        {'l_name':'yo','f_name':'alice'}])
 
 
-select() - Create a "SELECT" Statement
+select() - 创建一个"SELECT"语句
 ---------------------------------------
 
 .. code-block:: python
@@ -469,7 +469,7 @@ select() - Create a "SELECT" Statement
     for _row in res:
         print(_row)
 
-join() - Joined Two Tables via "JOIN" Statement
+join() - 通过"JOIN"语句，join两张表
 ------------------------------------------------
 
 .. code-block:: python
@@ -510,7 +510,7 @@ join() - Joined Two Tables via "JOIN" Statement
     for _row in res:
         print(_row)
 
-Delete Rows from Table
+从表中删除行
 ------------------------
 
 .. code-block:: python
@@ -543,7 +543,7 @@ Delete Rows from Table
     for _row in res:
         print(_row)
 
-Check Table Existing
+检查表是否存在
 ----------------------
 
 .. code-block:: python
@@ -579,7 +579,7 @@ Check Table Existing
     for _t in ins.get_table_names():
         print(_t)
 
-Create multiple tables at once
+一次创建多个表
 -------------------------------
 
 .. code-block:: python
@@ -618,7 +618,7 @@ Create multiple tables at once
     inspector = inspect(engine)
     print(inspector.get_table_names())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -626,7 +626,7 @@ output:
     [u'table1', u'table2', u'table3']
 
 
-Create tables with dynamic columns (Table)
+创建多个表，通过动态的行
 --------------------------------------------
 
 .. code-block:: python
@@ -666,7 +666,7 @@ Create tables with dynamic columns (Table)
     for _t in inspector.get_table_names():
         print(_t)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -675,7 +675,7 @@ output:
     Table2
 
 
-Object Relational add data
+对象关系添加数据
 ----------------------------
 
 .. code-block:: python
@@ -724,7 +724,7 @@ Object Relational add data
     finally:
         session.close()
 
-Object Relational update data
+对象关系更新数据
 ------------------------------
 
 .. code-block:: python
@@ -784,7 +784,7 @@ Object Relational update data
     finally:
         session.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -793,7 +793,7 @@ output:
     update: Hello World
 
 
-Object Relational delete row
+对象关系删除行
 -----------------------------
 
 .. code-block:: python
@@ -841,7 +841,7 @@ Object Relational delete row
             TestTable.key=='hello')
     print(query.all())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -849,7 +849,7 @@ output:
     <__main__.TestTable object at 0x104eb8f50>
     []
 
-Object Relational relationship
+对象关系的联系
 -------------------------------
 
 .. code-block:: python
@@ -881,7 +881,7 @@ Object Relational relationship
     print(u1.addresses)
     print(a1.user)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -892,7 +892,7 @@ output:
     <__main__.User object at 0x10c4ed810>
 
 
-Object Relational self association
+对象关系的自身联系
 -----------------------------------
 
 .. code-block:: python
@@ -941,7 +941,7 @@ Object Relational self association
     print('----> left')
     print(json.dumps([_n.to_json() for _n in nodes[1].left], indent=2))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -977,7 +977,7 @@ output:
     ]
 
 
-Object Relational basic query
+对象关系基本查询
 ------------------------------
 
 .. code-block:: python
@@ -1099,7 +1099,7 @@ Object Relational basic query
     for _row in query.all():
         print(_row.name, _row.fullname)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1162,7 +1162,7 @@ output:
     ed Ed Jones
     fred Fred Flinstone
 
-mapper: Map ``Table`` to ``class``
+mapper: 对应 ``Table`` 到 ``class``
 -----------------------------------
 
 .. code-block:: python
@@ -1235,7 +1235,7 @@ mapper: Map ``Table`` to ``class``
     finally:
         session.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1243,7 +1243,7 @@ output:
     Hello HelloWorld ker
 
 
-Get table dynamically
+动态获取表
 ----------------------
 
 .. code-block:: python
@@ -1300,7 +1300,7 @@ Get table dynamically
     finally:
         Session.close()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1309,7 +1309,7 @@ output:
     bar
 
 
-Object Relational join two tables
+对象关系join两张表
 ----------------------------------
 
 .. code-block:: python
@@ -1365,7 +1365,7 @@ Object Relational join two tables
     for _a, _u in query.all():
         print(_u.name, _a.email)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1442,7 +1442,7 @@ join on relationship and group_by count
     finally:
         Session.remove()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1451,7 +1451,7 @@ output:
     parent: Bob, num_child: 1
 
 
-Create tables with dynamic columns (ORM)
+通过动态字段创建表
 ------------------------------------------
 
 .. code-block:: python
@@ -1493,7 +1493,7 @@ Create tables with dynamic columns (ORM)
     for _t in inspector.get_table_names():
         print(_t)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1502,7 +1502,7 @@ output:
     Table2
 
 
-Close database connection
+关闭数据库连接
 --------------------------
 
 .. code-block:: python
@@ -1542,7 +1542,7 @@ Close database connection
     finally:
         engine.dispose()
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1551,11 +1551,11 @@ output:
 
 .. warning::
 
-    Be careful. Close *session* does not mean close database connection.
-    SQLAlchemy *session* generally represents the *transactions*, not connections.
+    注意。关闭 *session* 不是意味着关闭数据库连接。
+    SQLAlchemy *session* 通常表示 *transactions*，而不是连接。
 
 
-Cannot use the object after close the session
+不要在关闭session后使用对象
 -----------------------------------------------
 
 .. code-block:: python
@@ -1603,7 +1603,7 @@ Cannot use the object after close the session
     finally:
         engine.dispose()
 
-output:
+输出:
 
 .. code-block:: bash
 
