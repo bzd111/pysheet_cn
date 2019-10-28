@@ -172,6 +172,7 @@ Socket结合asyncio
 输出: (bash 1)
 
 .. code-block:: console
+
     $ python socket_asyncio.py &
     $ nc localhost 9527
     Hello
