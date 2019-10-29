@@ -9,7 +9,7 @@ Secure Shell
 .. contents:: Table of Contents
     :backlinks: none
 
-Login ssh
+登入ssh
 ---------
 
 .. code-block:: python
@@ -64,4 +64,3 @@ Login ssh
     # eval $(ssh-agent)
     # ssh-add key
     # ssh -i key me@localhost
-
