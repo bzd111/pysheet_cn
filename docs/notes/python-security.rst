@@ -1,12 +1,12 @@
 ========
-Security
+安全性
 ========
 
 .. contents:: Table of Contents
     :backlinks: none
 
 
-Simple https server
+简单的https服务
 ---------------------
 
 .. code-block:: python
@@ -38,7 +38,7 @@ Simple https server
     ...
     >>> httpd.serve_forever()
 
-Generate a SSH key pair
+生成一个SSH密钥对
 ------------------------
 
 .. code-block:: python
@@ -66,7 +66,7 @@ Generate a SSH key pair
         f.write(private_key)
         g.write(public_key)
 
-Get certificate information
+获取证书信息
 ----------------------------
 
 .. code-block:: python
@@ -104,7 +104,7 @@ Get certificate information
         for info in getattr(cert, attr):
             print("{}: {}".format(info._oid._name, info._value))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -140,7 +140,7 @@ output:
     emailAddress: test@example.com
 
 
-Generate a self-signed certificate
+生成自签名证书
 -----------------------------------
 
 .. code-block:: python
@@ -182,7 +182,7 @@ Generate a self-signed certificate
     with open('cert.pem', "wb") as f:
         f.write(crypto.dump_certificate(ftype, cert))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -197,7 +197,7 @@ output:
     issuer= /C=TW/ST=Taiwan/L=Taipei/O=pysheeet/OU=cheat sheet/CN=pythonsheets.com
 
 
-Prepare a Certificate Signing Request (csr)
+准备证书签署请求(csr)
 --------------------------------------------
 
 .. code-block:: python
@@ -249,7 +249,7 @@ Prepare a Certificate Signing Request (csr)
     csr = crypto.dump_certificate_request(ftype, req)
     with open("cert.csr", 'wb') as f: f.write(csr)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -297,7 +297,7 @@ output:
     $ openssl x509 -in cert.pem -text -noout
 
 
-Generate RSA keyfile without passphrase
+生成RSA密钥文件没有口令
 -----------------------------------------
 
 .. code-block:: python
@@ -319,7 +319,7 @@ Generate RSA keyfile without passphrase
     ...     encryption_algorithm=serialization.NoEncryption()))
 
 
-Sign a file by a given private key
+使用给定的私钥签名文件
 -----------------------------------
 
 .. code-block:: python
@@ -345,7 +345,7 @@ Sign a file by a given private key
     sign = signer(key, data)
     with open('foo.tgz.sha256', 'wb') as f: f.write(sign)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -358,7 +358,7 @@ output:
     Verified OK
 
 
-Verify a file from a signed digest
+验证来自已签名摘要的文件
 -----------------------------------
 
 .. code-block:: python
@@ -389,7 +389,7 @@ Verify a file from a signed digest
     else:
         print("Verification Failure")
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -409,7 +409,7 @@ output:
     Verified OK
 
 
-Simple RSA encrypt via pem file
+通过pem文件进行简单的RSA加密
 --------------------------------
 
 .. code-block:: python
@@ -437,7 +437,7 @@ Simple RSA encrypt via pem file
     cipher_text = base64.b64encode(cipher_text)
     print(cipher_text.decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -450,7 +450,7 @@ output:
     Hello RSA!
 
 
-Simple RSA encrypt via RSA module
+通过RSA模块进行简单的RSA加密
 ----------------------------------
 
 .. code-block:: python
@@ -479,7 +479,7 @@ Simple RSA encrypt via RSA module
     cipher_text = base64.b64encode(cipher_text)
     print(cipher_text.decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -515,7 +515,7 @@ output:
     > openssl rsautl -decrypt -inkey private.key
     Hello RSA!
 
-Simple RSA decrypt via pem file
+通过pem文件进行简单的RSA解密
 --------------------------------
 
 .. code-block:: python
@@ -544,7 +544,7 @@ Simple RSA decrypt via pem file
     plain_text = cipher.decrypt(cipher_text, None)
     print(plain_text.decode('utf-8').strip())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -557,7 +557,7 @@ output:
     Hello openssl RSA encrypt
 
 
-Simple RSA encrypt with OAEP
+使用OAEP进行简单的RSA加密
 -----------------------------
 
 .. code-block:: python
@@ -586,7 +586,7 @@ Simple RSA encrypt with OAEP
     cipher_text = base64.b64encode(cipher_text)
     print(cipher_text.decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -599,7 +599,7 @@ output:
     Hello RSA OAEP!
 
 
-Simple RSA decrypt with OAEP
+使用OAEP进行简单的RSA解密
 -----------------------------
 
 .. code-block:: python
@@ -628,7 +628,7 @@ Simple RSA decrypt with OAEP
     plain_text = cipher.decrypt(cipher_text)
     print(plain_text.decode('utf-8').strip())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -641,7 +641,7 @@ output:
     Hello RSA encrypt via OAEP
 
 
-Using DSA to proof of identity
+使用DSA进行身份证明
 --------------------------------
 
 .. code-block:: python
@@ -694,7 +694,7 @@ Using DSA to proof of identity
     # attacker modify the msg will make the msg check fail
     verify_data(b"I'm attacker!", bob_recv_signature, alice_public_key)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -703,7 +703,7 @@ output:
     recv msg: b"I'm attacker!" not trust!
 
 
-Using AES CBC mode encrypt a file
+使用AES CBC模式加密文件
 ----------------------------------
 
 .. code-block:: python
@@ -752,7 +752,7 @@ Using AES CBC mode encrypt a file
     with open(sys.argv[2], 'wb') as f:
         f.write(ciphertext)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -767,7 +767,7 @@ output:
     Encrypt file via AES-CBC
 
 
-Using AES CBC mode decrypt a file
+使用AES CBC模式解密文件
 ----------------------------------
 
 .. code-block:: python
@@ -813,7 +813,7 @@ Using AES CBC mode decrypt a file
     plaintext = decrypt(key, iv, ciphertext)
     print(plaintext)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -824,7 +824,7 @@ output:
     $ python3 aes.py $key $iv test.enc
 
 
-AES CBC mode encrypt via password (using cryptography)
+AES CBC模式通过密码加密(使用 cryptography)
 -------------------------------------------------------
 
 .. code-block:: python
@@ -893,7 +893,7 @@ AES CBC mode encrypt via password (using cryptography)
 
     print(aes_encrypt(pwd, plaintext, md).decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -912,7 +912,7 @@ output:
     Encrypt plaintext via AES-CBC from a given password
 
 
-AES CBC mode decrypt via password (using cryptography)
+AES CBC模式通过密码解密(使用 cryptography)
 --------------------------------------------------------
 
 .. code-block:: python
@@ -978,7 +978,7 @@ AES CBC mode decrypt via password (using cryptography)
 
     print(aes_decrypt(pwd, ciphertext, md).decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -997,7 +997,7 @@ output:
     Decrypt ciphertext via AES-CBC from a given password
 
 
-AES CBC mode encrypt via password (using pycrypto)
+AES CBC模式通过密码加密（使用pycrypto）
 ---------------------------------------------------
 
 .. code-block:: python
@@ -1058,7 +1058,7 @@ AES CBC mode encrypt via password (using pycrypto)
 
     print(aes_encrypt(pwd, plaintext, md).decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1077,7 +1077,7 @@ output:
     Encrypt plaintext via AES-CBC from a given password
 
 
-AES CBC mode decrypt via password (using pycrytpo)
+AES CBC模式通过密码解密（使用pycrypto）
 ---------------------------------------------------
 
 .. code-block:: python
@@ -1133,7 +1133,7 @@ AES CBC mode decrypt via password (using pycrytpo)
 
     print(aes_decrypt(pwd, ciphertext, md).decode('utf-8'))
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1152,7 +1152,7 @@ output:
     Decrypt ciphertext via AES-CBC from a given password
 
 
-Ephemeral Diffie Hellman Key Exchange via cryptography
+通过加密的临时Diffie Hellman密钥交换
 -------------------------------------------------------
 
 .. code-block:: python
@@ -1169,7 +1169,7 @@ Ephemeral Diffie Hellman Key Exchange via cryptography
     >>> a_shared_key == b_shared_key
     True
 
-Calculate DH shared key manually via cryptography
+通过加密手动计算DH共享密钥
 ---------------------------------------------------
 
 .. code-block:: python
@@ -1188,7 +1188,7 @@ Calculate DH shared key manually via cryptography
     >>> shared_key == shared_key_manual
     True
 
-Calculate DH shared key from (p, g, pubkey)
+从（p，g，pubkey）计算DH共享密钥
 ---------------------------------------------
 
 .. code-block:: python
