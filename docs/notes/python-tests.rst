@@ -6,12 +6,12 @@ Test
     :backlinks: none
 
 
-A simple Python unittest
+一个简单的Python单元测试
 ------------------------
 
 .. code-block:: python
 
-    # python unittests only run the function with prefix "test"
+    # python单元测试只会运行已"tset"开头的函数
 
     >>> from __future__ import print_function
     >>> import unittest
@@ -47,7 +47,7 @@ A simple Python unittest
     FAILED (failures=1)
 
 
-Python unittest setup & teardown hierarchy
+Python单元测试setup和teardown层次结构
 ------------------------------------------
 
 .. code-block:: python
@@ -57,10 +57,11 @@ Python unittest setup & teardown hierarchy
     import unittest
 
     def fib(n):
-        return 1 if n<=2 else fib(n-1)+fib(n-2)
+        return 1 if n<=2 else fib(n-1) + fib(n-2)
 
     def setUpModule():
             print("setup module")
+
     def tearDownModule():
             print("teardown module")
 
@@ -72,21 +73,25 @@ Python unittest setup & teardown hierarchy
         def tearDown(self):
             print("tearDown")
             del self.n
+
         @classmethod
         def setUpClass(cls):
             print("setUpClass")
+
         @classmethod
         def tearDownClass(cls):
             print("tearDownClass")
+
         def test_fib_assert_equal(self):
             self.assertEqual(fib(self.n), 55)
+
         def test_fib_assert_true(self):
             self.assertTrue(fib(self.n) == 55)
 
     if __name__ == "__main__":
         unittest.main()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -105,7 +110,7 @@ output:
 
     OK
 
-Different module of setUp & tearDown hierarchy
+不同模块的setUp和tearDown层次结构
 ----------------------------------------------
 
 .. code-block:: python
@@ -119,21 +124,27 @@ Different module of setUp & tearDown hierarchy
         @classmethod
         def setUpClass(self):
             print("foo setUpClass")
+
         @classmethod
         def tearDownClass(self):
             print("foo tearDownClass")
+
         def setUp(self):
             print("foo setUp")
+
         def tearDown(self):
             print("foo tearDown")
+
         def test_foo(self):
             self.assertTrue(True)
 
     class TestBar(unittest.TestCase):
         def setUp(self):
             print("bar setUp")
+
         def tearDown(self):
             print("bar tearDown")
+
         def test_bar(self):
             self.assertTrue(True)
 
@@ -161,7 +172,7 @@ Different module of setUp & tearDown hierarchy
         unittest.TextTestRunner().run(suite)
 
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -180,7 +191,7 @@ output:
 
     OK
 
-Run tests via unittest.TextTestRunner
+通过unittest.TextTestRunner运行测试
 -------------------------------------
 
 .. code-block:: python
@@ -202,7 +213,7 @@ Run tests via unittest.TextTestRunner
 
     OK
 
-Test raise exception
+测试抛出异常
 --------------------
 
 .. code-block:: python
@@ -242,7 +253,7 @@ Test raise exception
     FAILED (failures=1)
 
 
-Pass arguments into a TestCase
+传递参数到TestCase
 ------------------------------
 
 .. code-block:: python
@@ -271,7 +282,7 @@ Pass arguments into a TestCase
 
     OK
 
-Group multiple testcases into a suite
+将多个测试用例分组到一个suite中
 -------------------------------------
 
 .. code-block:: python
@@ -304,7 +315,7 @@ Group multiple testcases into a suite
 
     OK
 
-Group multiple tests from different TestCase
+将多个测试用例分组到不同的TestCase
 --------------------------------------------
 
 .. code-block:: python
@@ -330,7 +341,7 @@ Group multiple tests from different TestCase
 
     OK
 
-Skip some tests in the TestCase
+在TestCase跳过一些测试
 -------------------------------
 
 .. code-block:: python
@@ -364,7 +375,7 @@ Skip some tests in the TestCase
     OK (skipped=3)
 
 
-Monolithic Test
+整体测试
 ----------------
 
 .. code-block:: python
@@ -403,7 +414,7 @@ Monolithic Test
     <unittest.runner.TextTestResult run=1 errors=0 failures=0>
 
 
-Cross-module variables to Test files
+跨模块变量测试文件
 ------------------------------------
 
 test_foo.py
@@ -444,7 +455,7 @@ test_bar.py
         suite = loader.loadTestsFromTestCase(module.TestFoo)
         unittest.TextTestRunner(verbosity=2).run(suite)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -460,7 +471,7 @@ output:
     OK (skipped=1)
 
 
-skip setup & teardown when the test is skipped
+当测试被跳过时，跳过setup和teardown
 -----------------------------------------------
 
 .. code-block:: python
@@ -490,7 +501,7 @@ skip setup & teardown when the test is skipped
 
     OK (skipped=1)
 
-Re-using old test code
+重用老得测试
 ----------------------
 
 .. code-block:: python
@@ -520,7 +531,7 @@ Re-using old test code
     OK
     <unittest.runner.TextTestResult run=1 errors=0 failures=0>
 
-Testing your document is right
+正确的测试你的文档
 ------------------------------
 
 .. code-block:: python
@@ -552,7 +563,7 @@ Testing your document is right
         import doctest
         doctest.testmod()
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -581,7 +592,7 @@ output:
     3 passed and 0 failed.
     Test passed.
 
-Re-using doctest to unittest
+重用doctest到unittest
 ----------------------------
 
 .. code-block:: python
@@ -617,7 +628,7 @@ Re-using doctest to unittest
         suite = doctest.DocTestSuite(test_finder=finder)
         unittest.TextTestRunner(verbosity=2).run(suite)
 
-output:
+输出:
 
 .. code-block:: console
 
@@ -630,7 +641,7 @@ output:
     OK
 
 
-Customize test report
+自定义测试报告
 ----------------------
 
 .. code-block:: python
@@ -718,7 +729,7 @@ Customize test report
             raise NotImplementedError
 
     if __name__ == '__main__':
-        # redirector default output of unittest to /dev/null
+        # redirector default 输出 of unittest to /dev/null
         with open(os.devnull, 'w') as null_stream:
             # new a runner and overwrite resultclass of runner
             runner = TextTestRunner(stream=null_stream)
@@ -730,10 +741,10 @@ Customize test report
             # run the testsuite
             result = runner.run(suite)
 
-            # print json output
+            # print json 输出
             pprint(result.jsonify())
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -744,7 +755,7 @@ output:
                     'skip': ['test_skip']}}
 
 
-Mock - using ``@patch`` substitute original method
+Mock - 使用 ``@patch`` 替换原始方法
 ----------------------------------------------------
 
 .. code-block:: python
@@ -771,7 +782,7 @@ Mock - using ``@patch`` substitute original method
 
 .. note::
 
-    Without mock, above test will always fail.
+    不使用mock，上面的测试会一直失败。
 
 .. code-block:: python
 
@@ -788,8 +799,8 @@ Mock - using ``@patch`` substitute original method
     [Errno 2] No such file or directory: '%$!?&*'
 
 
-What ``with unittest.mock.patch`` do?
----------------------------------------
+``with unittest.mock.patch`` 到底做了什么?
+----------------------------------------------
 
 .. code-block:: python
 
@@ -839,7 +850,7 @@ What ``with unittest.mock.patch`` do?
     except OSError as e:
         print(e)
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -852,7 +863,7 @@ output:
     [Errno 2] No such file or directory: '$@!%?&'
 
 
-Mock - substitute ``open``
+Mock - 替换 ``open``
 ---------------------------
 
 .. code-block:: python
