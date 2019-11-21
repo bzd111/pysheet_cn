@@ -3,28 +3,23 @@
     :keywords: Python, Python3, Python C Extensions, Python C Extensions Cheat Sheet
 
 ============
-C Extensions
+C拓展
 ============
 
-Occasionally, it is unavoidable for pythoneers to write a C extension. For
-example, porting C libraries or new system calls to Python requires to
-implement new object types through C extension. In order to provide a brief
-glance on how C extension works. This cheat sheet mainly focuses on writing a
-Python C extension.
+有时候，这是不可避免的，pythoneers要编写C扩展。
+比如说，将C库或新的系统调用移植到Python需要通过C扩展实现新的对象类型。
+为了简要介绍C扩展的工作原理。 该备忘单主要致力于编写Python C扩展。
 
-Note that the C extension interface is specific to official CPython. It is
-likely that extension modules do not work on other Python implementations
-such as `PyPy <https://pypy.org/>`_. Even if official CPython, the Python
-C API may be not compatible with different versions, e.g., Python2 and Python3.
-Therefore, if extension modules are considered to be run on other Python
-interpreters, it would be better to use `ctypes <https://docs.python.org/3/library/ctypes.html>`_
-module or `cffi <https://cffi.readthedocs.io/en/latest/>`_.
+注意这里的C拓展是针对与官方的CPython的。拓展模块可能会在其他的Pytho解释器上不工作，比如`PyPy <https://pypy.org/>`_。
+即使是官方的CPython解释器，Python的C API也可能不兼容版本，例如，Python2和Python3。
+因此，如果拓展模块想要运行在其他的Python解释器上，最好使用 `ctypes <https://docs.python.org/3/library/ctypes.html>`_
+模块或 `cffi <https://cffi.readthedocs.io/en/latest/>`_。
 
 .. contents:: Table of Contents
     :backlinks: none
 
 
-Simple setup.py
+简单的setup.py
 ----------------
 
 .. code-block:: python
@@ -35,7 +30,7 @@ Simple setup.py
     setup(name="Foo", version="1.0", ext_modules=[ext])
 
 
-Customize CFLAGS
+自定义CFLAGS
 -----------------
 
 .. code-block:: python
@@ -55,7 +50,7 @@ Customize CFLAGS
 
     setup(name="foo", version="1.0", ext_modules=[ext])
 
-Doc String
+文档字符串
 ----------
 
 .. code-block:: c
@@ -77,7 +72,7 @@ Doc String
     };
 
 
-Simple C Extension
+简单C拓展
 -------------------
 
 foo.c
@@ -110,7 +105,7 @@ foo.c
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -119,7 +114,7 @@ output:
     $ python -c "import foo; foo.foo()"
     'foo'
 
-Release the GIL
+释放GIL锁
 ---------------
 
 .. code-block:: c
@@ -148,7 +143,7 @@ Release the GIL
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -170,10 +165,9 @@ output:
     2018-11-04 20:15:34.860705: thread 2
 
 
-In C extension, blocking I/O should be inserted into a block which is wrapped by
-``Py_BEGIN_ALLOW_THREADS`` and ``Py_END_ALLOW_THREADS`` for releasing the GIL
-temporarily; Otherwise, a blocking I/O operation has to wait until previous
-operation finish. For example
+在C拓展中，阻塞I/O应该被拆入到包含了 ``Py_BEGIN_ALLOW_THREADS`` 和 ``Py_END_ALLOW_THREADS`` 块中，为了暂时释放GIL锁；
+否则，一个阻塞I/O操作不得不等待，知道上一个操作完成。
+例如
 
 .. code-block:: c
 
@@ -199,7 +193,7 @@ operation finish. For example
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -220,10 +214,9 @@ output:
 
 .. warning::
 
-    The GIL can only be safely released when there is **NO** Python C API
-    functions between ``Py_BEGIN_ALLOW_THREADS`` and ``Py_END_ALLOW_THREADS``.
+    GIL可以安全地被释放，当 ``Py_BEGIN_ALLOW_THREADS`` 和 ``Py_END_ALLOW_THREADS`` 之间，**没有** Python C API的函数。
 
-Acquire the GIL
+取得GIL锁
 ---------------
 
 .. code-block:: c
@@ -341,7 +334,7 @@ Acquire the GIL
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -359,9 +352,9 @@ output:
     2018-11-05 09:33:50.642634: Awesome Python!
     2018-11-05 09:33:50.642672: Awesome Python!
 
-If threads are created from C/C++, those threads do not hold the GIL. Without
-acquiring the GIL, the interpreter cannot access Python functions safely. For
-example
+如果线程被C/C++创建，这些线程不会拥有GIL。没有获得GIL锁，
+这个解释起不能安全地访问Python的函数。
+例如
 
 .. code-block:: c
 
@@ -375,7 +368,7 @@ example
         return NULL;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -390,8 +383,8 @@ output:
 
 .. warning::
 
-    In order to call python function safely, we can simply warp **Python Functions**
-    between ``PyGILState_Ensure`` and ``PyGILState_Release`` in C extension code.
+    为了安全地调用python函数，我们可以简单的包装 **Python函数**
+    在 ``PyGILState_Ensure`` 和 ``PyGILState_Release`` C拓展代码。
 
     .. code-block:: c
 
@@ -403,7 +396,7 @@ output:
 
 
 
-Get Reference Count
+获取引用计数
 --------------------
 
 .. code-block:: c
@@ -430,7 +423,7 @@ Get Reference Count
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -450,7 +443,7 @@ output:
     >>> foo.getrefcount(l[0])
     105
 
-Parse Arguments
+解析参数
 ----------------
 
 .. code-block:: c
@@ -513,7 +506,7 @@ Parse Arguments
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -533,7 +526,7 @@ output:
     >>> foo.qux(x=3)
     (3, None)
 
-Calling Python Functions
+调用Python函数
 -------------------------
 
 .. code-block:: c
@@ -577,7 +570,7 @@ Calling Python Functions
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -586,7 +579,7 @@ output:
     $ python -c "import foo; foo.foo(print)"
     Awesome Python!
 
-Raise Exception
+抛出异常
 ----------------
 
 .. code-block:: c
@@ -618,7 +611,7 @@ Raise Exception
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -630,7 +623,7 @@ output:
       File "<string>", line 1, in <module>
     NotImplementedError: Not implemented
 
-Customize Exception
+自定义异常
 --------------------
 
 .. code-block:: c
@@ -675,7 +668,7 @@ Customize Exception
     }
 
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -686,7 +679,7 @@ output:
       File "<string>", line 1, in <module>
     foo.FooError: Raise exception in C
 
-Iterate a List
+迭代一个列表
 ---------------
 
 .. code-block:: c
@@ -740,7 +733,7 @@ Iterate a List
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -751,7 +744,7 @@ output:
     2
     3
 
-Iterate a Dictionary
+迭代一个字典
 ---------------------
 
 .. code-block:: c
@@ -800,7 +793,7 @@ Iterate a Dictionary
         return PyModule_Create(&module);
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -809,7 +802,7 @@ output:
     $ python -c "import foo; foo.iter_dict({'k': 'v'})"
     '(k, v)'
 
-Simple Class
+简单类
 -------------
 
 .. code-block:: c
@@ -852,7 +845,7 @@ Simple Class
         return m;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -873,7 +866,7 @@ output:
     >>> print(type(o))
     <class '__main__.Foo'>
 
-Simple Class with Members and Methods
+简单类有成员和方法
 --------------------------------------
 
 .. code-block:: c
@@ -1027,7 +1020,7 @@ Simple Class with Members and Methods
         return m;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1044,7 +1037,7 @@ output:
     55
 
 
-Simplie Class with Getter and Setter
+简单类有Getter和Setter
 -------------------------------------
 
 .. code-block:: c
@@ -1191,7 +1184,7 @@ Simplie Class with Getter and Setter
         return m;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1210,7 +1203,7 @@ output:
       File "<stdin>", line 1, in <module>
     TypeError: value should be unicode
 
-Inherit from Other Class
+从其他类继承
 -------------------------
 
 .. code-block:: c
@@ -1414,7 +1407,7 @@ Inherit from Other Class
         return m;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1430,7 +1423,7 @@ output:
     >>> bar.gcd(3, 7)
     1
 
-Run a Python Command
+运行一个python命令
 ---------------------
 
 .. code-block:: c
@@ -1448,7 +1441,7 @@ Run a Python Command
         return rc;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1457,8 +1450,8 @@ output:
     $ ./foo "print('Hello Python')"
     Hello Python
 
-Run a Python File
------------------
+运行一个python文件
+----------------------
 
 .. code-block:: c
 
@@ -1507,7 +1500,7 @@ Run a Python File
         return rc;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1517,7 +1510,7 @@ output:
     $ ./foo foo.py arg1 arg2 arg3
     ['./foo', 'foo.py', 'arg1', 'arg2', 'arg3']
 
-Import a Python Module
+导入一个Python模块
 -----------------------
 
 .. code-block:: c
@@ -1585,7 +1578,7 @@ Import a Python Module
         return rc;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1594,7 +1587,7 @@ output:
     $ ./foo
     '{"foo": "Foo", "bar": 123}'
 
-Import everything of a Module
+导入模块里所有东西
 ------------------------------
 
 .. code-block:: c
@@ -1674,7 +1667,7 @@ Import everything of a Module
         return rc;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1683,7 +1676,7 @@ output:
     $ ./foo
     'Darwin'
 
-Access Attributes
+访问属性
 ------------------
 
 .. code-block:: c
@@ -1745,7 +1738,7 @@ Access Attributes
         return rc;
     }
 
-output:
+输出:
 
 .. code-block:: bash
 
@@ -1754,7 +1747,7 @@ output:
     $ ./foo
     '{"foo": "Foo", "bar": 123}'
 
-Performance of C Extension
+C拓展的性能
 ---------------------------
 
 .. code-block:: c
@@ -1806,7 +1799,7 @@ Compare the performance with pure Python
     >>> s = time(); _ = foo.fib(35); e = time(); e - s
     0.04628586769104004
 
-Performance of ctypes
+ctypes的性能
 ----------------------
 
 .. code-block:: c
@@ -1840,7 +1833,7 @@ Compare the performance with pure Python
     >>> s = time(); _ = cfib(35); e = time(); e - s
     0.07283687591552734
 
-ctypes Error handling
+ctypes错误处理
 ----------------------
 
 .. code-block:: python
@@ -1932,7 +1925,7 @@ ctypes Error handling
         errmsg = "stat({}) failed. {}".format(path.raw, os.strerror(errno))
         raise OSError(errno, errmsg)
 
-output:
+输出:
 
 .. code-block:: console
 
