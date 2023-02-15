@@ -19,7 +19,7 @@ Flask-SeaSurf = "==0.2.2"
 Sphinx = "==2.2.0"
 Flask = "==1.1.1"
 Flask-Testing = "==0.7.1"
-Werkzeug = "==0.15.5"
+Werkzeug = "==2.2.3"
 
 [requires]
 python_version = "3.7"
